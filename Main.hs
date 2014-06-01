@@ -5,6 +5,7 @@ import Web.Twitter.Conduit
 import Web.Authenticate.OAuth
 import Control.Monad.Logger
 import qualified Web.Twitter.Types as TT
+import qualified Data.Text as T
 
 tokens :: String -> String -> OAuth -- TwitterはアクセスするのにOAuthという仕組みを使っているのですが、その時に必要なConsumerKey/ConsumerSecretを指定します
 tokens ck cs = twitterOAuth
@@ -21,6 +22,8 @@ twInfo ck cs ot ots = setCredential ( tokens ck cs ) ( credential ot ots ) def
 
 main :: IO ( )
 main = do
+    putStr "ScreenName(ex. minamiyama1994)を入力 > " >> hFlush stdout
+    sn <- getLine
     putStr "ConsumerKeyを入力 > " >> hFlush stdout
     ck <- getLine
     putStr "ConsumerSecretを入力 > " >> hFlush stdout
@@ -34,6 +37,6 @@ main = do
     ids <- getContents >>= return . map ( read . read ) . words
     runNoLoggingT . runTW ( twInfo ck cs ot ots ) $ forM_ ids $ \ i -> do
         status <- call $ showId i
-        when ( TT.statusFavoriteCount status < cnt ) $ do
+        when ( ( TT.statusFavoriteCount status < cnt ) || ( ( TT.userScreenName $ TT.statusUser status ) /= T.pack sn ) ) $ do
             call $ destroyId $ i
             return ( )

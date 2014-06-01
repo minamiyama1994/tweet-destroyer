@@ -10,7 +10,7 @@ name:                tweet-destroyer
 -- PVP summary:      +-+------- breaking API changes
 --                   | | +----- non-breaking API additions
 --                   | | | +--- code changes with no API change
-version:             0.1.0.0
+version:             0.2.0.0
 
 -- A short (one-line) description of the package.
 synopsis:            Tweet Destroyer
@@ -60,7 +60,7 @@ executable tweet-destroyer
   -- other-extensions:    
   
   -- Other library packages from which modules are imported.
-  build-depends:       base ==4.6.* , twitter-conduit == 0.1.* , twitter-types == 0.3.* , monad-logger == 0.3.* , authenticate-oauth == 1.4.* , bytestring == 0.10.*
+  build-depends:       base ==4.6.* , twitter-conduit == 0.1.* , twitter-types == 0.3.* , monad-logger == 0.3.* , authenticate-oauth == 1.4.* , bytestring == 0.10.* , text == 0.11.*
   
   -- Directories containing source files.
   hs-source-dirs:      .
