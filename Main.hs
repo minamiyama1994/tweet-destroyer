@@ -7,7 +7,6 @@ import Web.Authenticate.OAuth
 import Control.Monad.Logger
 import qualified Web.Twitter.Types as TT
 import qualified Data.Text as T
-import Control.Monad.Error.Class
 
 tokens :: String -> String -> OAuth -- TwitterはアクセスするのにOAuthという仕組みを使っているのですが、その時に必要なConsumerKey/ConsumerSecretを指定します
 tokens ck cs = twitterOAuth
@@ -37,7 +36,7 @@ main = do
     putStr "何ふぁぼ以上のツイートを削除せずに残しますか？　nを入力すると、n以上のふぁぼられツイートは削除されません > " >> hFlush stdout
     cnt <- getLine >>= return . read
     ids <- getContents >>= return . map ( read . read ) . words
-    forM_ ids $ \i -> flip catchError ( \ _ -> putStrLn $ "ツイート" ++ show i ++ "の削除に失敗しました、処理を続行します" ) $ do
+    forM_ ids $ \ i -> do
         threadDelay $ 5 * 1000 * 1000
         runNoLoggingT . runTW ( twInfo ck cs ot ots ) $ do
             status <- call $ showId i
